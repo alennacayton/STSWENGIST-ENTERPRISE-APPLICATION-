@@ -1,14 +1,19 @@
 package com.orangeandbronze.enlistment.controllers;
 
 import com.orangeandbronze.enlistment.domain.*;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.*;
 
-import java.time.*;
+import javax.websocket.Session;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static org.apache.commons.lang3.Validate.notNull;
 
 @Controller
 @RequestMapping("sections")
@@ -43,7 +48,31 @@ class SectionsController {
     @PostMapping
     public String createSection(@RequestParam String sectionId, @RequestParam String subjectId, @RequestParam Days days,
                                 @RequestParam String start, @RequestParam String end, @RequestParam String roomName, RedirectAttributes redirectAttrs) {
-        return "";
+        // Check if session for admin user is not null
+        Session session = entityManager.unwrap(Session.class);
+        notNull(session);
+
+        // Retrieve a Subject from the DB
+        Subject subject = subjectRepo.findById(subjectId).orElseThrow(() -> new NoSuchElementException(
+                "no subject found with subjectId " + subjectId));
+
+        // Retrieve a Room from the DB
+        Room room = roomRepo.findById(roomName).orElseThrow(() -> new NoSuchElementException(
+                "no room found with roomName " + roomName));
+
+        // Format date for the Period constructor
+        DateTimeFormatter dtfPeriod;
+        dtfPeriod = DateTimeFormatter.ofPattern("H:mm");
+
+        // Create Period and Schedule parameters for Section
+        Period period = new Period(LocalTime.parse(start, dtfPeriod), LocalTime.parse(end, dtfPeriod));
+        Schedule schedule = new Schedule(days, period);
+
+        // Create the Section object and save to DB
+        Section section = new Section(sectionId, subject, schedule, room);
+        sectionRepo.save(section);
+        return "redirect:sections";
+        // return "";
     }
 
     @ExceptionHandler(EnlistmentException.class)

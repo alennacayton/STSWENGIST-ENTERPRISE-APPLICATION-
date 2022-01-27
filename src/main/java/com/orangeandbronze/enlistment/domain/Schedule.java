@@ -5,12 +5,13 @@ import javax.persistence.*;
 import static org.apache.commons.lang3.Validate.notNull;
 
 @Embeddable
+public
 class Schedule {
     private final Days days;
     @Embedded
     private final Period period;
 
-    Schedule(Days days, Period period) {
+    public Schedule(Days days, Period period) {
         notNull(days);
         notNull(period);
         this.days = days;
