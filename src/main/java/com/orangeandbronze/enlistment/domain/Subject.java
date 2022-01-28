@@ -13,7 +13,7 @@ class Subject {
     @ManyToMany
     private final Collection<Subject> prerequisites = new HashSet<>();
 
-    Subject(String subjectId, Collection<Subject> prerequisites) {
+    public Subject(String subjectId, Collection<Subject> prerequisites) {
         notBlank(subjectId);
         notNull(prerequisites);
         isTrue(isAlphanumeric(subjectId), "subjectId must be alphanumeric, was: " + subjectId);
@@ -22,7 +22,7 @@ class Subject {
         this.prerequisites.removeIf(Objects::isNull);
     }
 
-    Subject(String subjectId) {
+    public Subject(String subjectId) {
         this(subjectId, Collections.emptyList());
     }
 
