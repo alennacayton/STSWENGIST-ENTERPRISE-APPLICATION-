@@ -1,6 +1,7 @@
 package com.orangeandbronze.enlistment.controllers;
 
 import com.orangeandbronze.enlistment.domain.*;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.orm.*;
 import org.springframework.retry.annotation.*;
@@ -16,6 +17,7 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
+import static org.apache.commons.lang3.Validate.notNull;
 
 
 @Transactional
@@ -67,7 +69,14 @@ class EnlistController {
     @PostMapping
     public String enlistOrCancel(@ModelAttribute Student student, @RequestParam String sectionId,
                                  @RequestParam UserAction userAction) {
-        return "";
+        Section section = sectionRepo.findById(sectionId).orElseThrow(() -> new NoSuchElementException("no section found with sectionId " + sectionId));
+        Session session = entityManager.unwrap(Session.class);
+        notNull(session);
+        session.update(student);
+        student.enlist(section);
+        studentRepo.save(student);
+        sectionRepo.save(section);
+        return "redirect:enlist";
     }
 
 
