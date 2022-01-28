@@ -45,33 +45,25 @@ class SectionsController {
         return "sections";
     }
 
-    @PostMapping
-    public String createSection(@RequestParam String sectionId, @RequestParam String subjectId, @RequestParam Days days,
-                                @RequestParam String start, @RequestParam String end, @RequestParam String roomName, RedirectAttributes redirectAttrs) {
-        // Check if session for admin user is not null
-        Session session = entityManager.unwrap(Session.class);
-        notNull(session);
+    @PostMapping public String createSection(@RequestParam String sectionId, @RequestParam String subjectId, @RequestParam Days days, @RequestParam String start, @RequestParam String end, @RequestParam String roomName, RedirectAttributes redirectAttrs) {
 
         // Retrieve a Subject from the DB
-        Subject subject = subjectRepo.findById(subjectId).orElseThrow(() -> new NoSuchElementException(
-                "no subject found with subjectId " + subjectId));
+        Subject subject = subjectRepo.findById(subjectId).orElseThrow(() -> new NoSuchElementException( "no subject found with subjectId " + subjectId));
 
         // Retrieve a Room from the DB
-        Room room = roomRepo.findById(roomName).orElseThrow(() -> new NoSuchElementException(
-                "no room found with roomName " + roomName));
 
+        Room room = roomRepo.findById(roomName).orElseThrow(() -> new NoSuchElementException( "no room found with roomName " + roomName));
         // Format date for the Period constructor
-        DateTimeFormatter dtfPeriod;
-        dtfPeriod = DateTimeFormatter.ofPattern("H:mm");
+        DateTimeFormatter dtfPeriod; dtfPeriod = DateTimeFormatter.ofPattern("H:mm");
 
         // Create Period and Schedule parameters for Section
         Period period = new Period(LocalTime.parse(start, dtfPeriod), LocalTime.parse(end, dtfPeriod));
         Schedule schedule = new Schedule(days, period);
 
         // Create the Section object and save to DB
-        Section section = new Section(sectionId, subject, schedule, room);
-        sectionRepo.save(section);
+        Section section = new Section(sectionId, subject, schedule, room); sectionRepo.save(section);
         return "redirect:sections";
+
         // return "";
     }
 
