@@ -42,6 +42,7 @@ class SectionsControllerTest {
         when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(DEFAULT_SUBJECT));
         when(roomRepository.findById(roomName)).thenReturn(Optional.of(room));
 
+        // Simulating the user action
         String returnVal = controller.createSection(sectionId, subjectId, days, startTime, endTime, roomName, redirectAttributes);
 
         // Retrieve the Subject object from the DB
