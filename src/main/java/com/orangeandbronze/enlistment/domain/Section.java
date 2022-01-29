@@ -49,7 +49,9 @@ public class Section {
                     " have same subject of " + subject);
         }
     }
-
+    public void checkIfFull() {
+        room.checkIfAtOrOverCapacity(numberOfStudents);
+    }
     void checkForScheduleConflict(Section other) {
         this.schedule.checkOverlap(other.schedule);
     }
