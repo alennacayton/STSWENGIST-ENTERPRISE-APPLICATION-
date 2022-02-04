@@ -21,6 +21,7 @@ import static com.orangeandbronze.enlistment.domain.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.web.servlet.function.RequestPredicates.*;
 
 
 @AutoConfigureMockMvc
@@ -66,6 +67,7 @@ class SectionsControllerIT {
         jdbcTemplate.update("INSERT INTO subject (subject_id) VALUES (?)", DEFAULT_SUBJECT_ID);
         jdbcTemplate.update("INSERT INTO admin (id, firstname, lastname) VALUES (?,?,?)",
                 DEFAULT_ADMIN_ID, "firstname", "lastname");
+        jdbcTemplate.update("INSERT INTO faculty (faculty_number) VALUES (?)", 1000);
 
 
         // Invoke a POST
@@ -82,7 +84,8 @@ class SectionsControllerIT {
                 .param("days", "MTH")
                 .param("start", start)
                 .param("end", end)
-                .param("roomName", roomName));
+                .param("roomName", roomName)
+                .param("facultyNumber", String.valueOf(1000)));
 
 
 
@@ -94,7 +97,8 @@ class SectionsControllerIT {
                 () -> assertEquals(MTH.ordinal(), results.get("days")),
                 () -> assertEquals(LocalTime.parse(start), LocalTime.parse(results.get("start_time").toString())),
                 () -> assertEquals(LocalTime.parse(end), LocalTime.parse(results.get("end_time").toString())),
-                () -> assertEquals(roomName, results.get("room_name"))
+                () -> assertEquals(roomName, results.get("room_name")),
+                () -> assertEquals(1000, results.get("instructor_faculty_number"))
         );
 
 
