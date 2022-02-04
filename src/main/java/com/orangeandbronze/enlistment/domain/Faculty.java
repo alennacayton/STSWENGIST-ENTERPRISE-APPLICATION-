@@ -1,10 +1,14 @@
 package com.orangeandbronze.enlistment.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 
+@Entity
 public class Faculty {
+    @Id
     private final int facultyNumber;
 
     public Faculty(int facultyNumber){
