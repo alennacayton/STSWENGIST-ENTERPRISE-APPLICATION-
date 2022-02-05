@@ -70,6 +70,12 @@ public class Section {
         this.schedule.checkOverlap(other.schedule);
     }
 
+    void checkForSameInstructor(Section other){
+        if(this.instructor.equals(other.instructor)){
+            checkForScheduleConflict(other);
+        }
+    }
+
     int getNumberOfStudents() {
         return numberOfStudents;
     }
@@ -88,6 +94,9 @@ public class Section {
         Collection<Subject> copy = new HashSet<>(subjectsTaken); // sets are quicker to search through
         subject.checkPrereqs(copy);
     }
+
+
+
 
     /** Locks this object's ReentrantLock **/
     void lock() {

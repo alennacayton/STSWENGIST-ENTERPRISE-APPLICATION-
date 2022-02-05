@@ -41,6 +41,7 @@ class Room {
     void addSection(Section newSection) {
         notNull(newSection);
         sections.forEach(currSection -> currSection.checkForScheduleConflict(newSection));
+        sections.forEach(currSection -> currSection.checkForSameInstructor(newSection));
         sections.add(newSection);
     }
 
