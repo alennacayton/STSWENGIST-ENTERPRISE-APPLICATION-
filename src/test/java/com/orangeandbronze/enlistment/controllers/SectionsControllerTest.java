@@ -29,6 +29,10 @@ class SectionsControllerTest {
         SectionRepository sectionRepository = mock(SectionRepository.class);
         SubjectRepository subjectRepository = mock(SubjectRepository.class);
         RoomRepository roomRepository = mock(RoomRepository.class);
+        FacultyRepository facultyRepository = mock(FacultyRepository.class);
+
+        when(facultyRepository.findById(DEFAULT_FACULTY_NUMBER)).thenReturn(Optional.of(DEFAULT_FACULTY));
+
         RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
 
         // Manually set the repos
@@ -37,13 +41,14 @@ class SectionsControllerTest {
         controller.setSectionRepo(sectionRepository);
         controller.setSubjectRepo(subjectRepository);
         controller.setRoomRepo(roomRepository);
+        controller.setFacultyRepo(facultyRepository);
 
         // Set the return values
         when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(DEFAULT_SUBJECT));
         when(roomRepository.findById(roomName)).thenReturn(Optional.of(room));
 
         // Simulating the user action
-        String returnVal = controller.createSection(sectionId, subjectId, days, startTime, endTime, roomName, redirectAttributes);
+        String returnVal = controller.createSection(sectionId, subjectId, days, startTime, endTime, roomName, DEFAULT_FACULTY_NUMBER, redirectAttributes);
 
         // Retrieve the Subject object from the DB
         verify(subjectRepository).findById(subjectId);

@@ -28,6 +28,9 @@ class SectionsController {
     private RoomRepository roomRepo;
     @Autowired
     private SectionRepository sectionRepo;
+    @Autowired
+    private FacultyRepository facultyRepo;
+
 
     @ModelAttribute("admin")
     public Admin admin(Integer id) {
@@ -42,10 +45,13 @@ class SectionsController {
         model.addAttribute("subjects", subjectRepo.findAll());
         model.addAttribute("rooms", roomRepo.findAll());
         model.addAttribute("sections", sectionRepo.findAll());
+        model.addAttribute("instructors", facultyRepo.findAll());
         return "sections";
     }
 
-    @PostMapping public String createSection(@RequestParam String sectionId, @RequestParam String subjectId, @RequestParam Days days, @RequestParam String start, @RequestParam String end, @RequestParam String roomName, RedirectAttributes redirectAttrs) {
+    @PostMapping public String createSection(@RequestParam String sectionId, @RequestParam String subjectId, @RequestParam Days days,
+                                             @RequestParam String start, @RequestParam String end, @RequestParam String roomName,
+                                             @RequestParam int facultyNumber, RedirectAttributes redirectAttrs) {
 
         // Retrieve a Subject from the DB
         Subject subject = subjectRepo.findById(subjectId).orElseThrow(() -> new NoSuchElementException( "no subject found with subjectId " + subjectId));
@@ -59,9 +65,10 @@ class SectionsController {
         // Create Period and Schedule parameters for Section
         Period period = new Period(LocalTime.parse(start, dtfPeriod), LocalTime.parse(end, dtfPeriod));
         Schedule schedule = new Schedule(days, period);
+        Faculty instructor = facultyRepo.findById(facultyNumber).orElseThrow( () -> new NoSuchElementException("No faculty found for facultyNumber " + facultyNumber));
 
         // Create the Section object and save to DB
-        Section section = new Section(sectionId, subject, schedule, room); sectionRepo.save(section);
+        Section section = new Section(sectionId, subject, schedule, room, instructor); sectionRepo.save(section);
         return "redirect:sections";
 
         // return "";
@@ -84,6 +91,8 @@ class SectionsController {
     void setRoomRepo(RoomRepository roomRepo) {
         this.roomRepo = roomRepo;
     }
+
+    void setFacultyRepo(FacultyRepository facultyRepo) { this.facultyRepo = facultyRepo; }
 
     void setAdminRepo(AdminRepository adminRepo) {
         this.adminRepo = adminRepo;

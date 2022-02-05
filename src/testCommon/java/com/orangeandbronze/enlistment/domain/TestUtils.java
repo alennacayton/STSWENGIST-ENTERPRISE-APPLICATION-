@@ -13,8 +13,13 @@ public class TestUtils {
     public static final Subject DEFAULT_SUBJECT = new Subject("DefaultSubject");
     public static final String DEFAULT_SUBJECT_ID = "DefaultSubject";
     public static final String DEFAULT_SECTION_ID = "DefaultSection";
-    public static int DEFAULT_STUDENT_NUMBER = 10;
+    public static final int DEFAULT_STUDENT_NUMBER = 10;
+    public static final int DEFAULT_FACULTY_NUMBER = 1000;
+    public static Faculty DEFAULT_FACULTY = new Faculty(DEFAULT_FACULTY_NUMBER);
 
+    public static Faculty newFaculty(int facultyNumber){
+        return new Faculty(facultyNumber);
+    }
 
     public static final int DEFAULT_ADMIN_ID = 20;
 
@@ -35,5 +40,9 @@ public class TestUtils {
      **/
     public static Student newDefaultStudent() {
         return newStudent(DEFAULT_STUDENT_NUMBER);
+    }
+
+    public static Section newDefaultSection(){
+        return new Section(DEFAULT_SECTION_ID, DEFAULT_SUBJECT, MTH830to10, new Room("X", 10), DEFAULT_FACULTY);
     }
 }
