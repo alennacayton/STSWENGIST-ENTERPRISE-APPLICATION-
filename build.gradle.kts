@@ -59,19 +59,21 @@ configurations {
     compileOnly{
         extendsFrom(configurations.annotationProcessor.get())
     }
-    liquibase {
+    liquibase{
         activities.register("main") {
             this.arguments = mapOf(
-                "changeLogFile" to "src/main/resources/db/changelog/db.changelog-master.sql",
-                "url" to prop.getProperty("spring.datasource.url"),
-                "username" to prop.getProperty("spring.datasource.username"),
-                "password" to prop.getProperty("spring.datasource.password"),
-                "driver" to "org.postgresql.Driver",
-                "referenceUrl" to "hibernate:string:com.orangeandbronze.enlistment.domain?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
-                )
+                    "changeLogFile" to "src/main/resources/db/changelog/db.changelog-master.sql",
+                    "url" to prop.getProperty("spring.datasource.url"),
+                    "username" to prop.getProperty("spring.datasource.username"),
+                    "password" to prop.getProperty("spring.datasource.password"),
+                    "driver" to "org.postgresql.Driver",
+                    "referenceUrl" to  "hibernate:spring:com.orangeandbronze.enlistment.domain?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+            )
+            runList = "main"
         }
     }
 }
+
 
 
 testSets {
