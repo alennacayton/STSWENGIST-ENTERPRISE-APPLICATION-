@@ -19,6 +19,7 @@ public class Faculty {
 
 
     public Faculty(int facultyNumber, String firstname, String lastname){
+
         isTrue(facultyNumber >= 0, "facultyNumber must be non-negative, was: " + facultyNumber);
         this.facultyNumber = facultyNumber;
 
@@ -32,6 +33,14 @@ public class Faculty {
 
     public int getFacultyNumber() {
         return facultyNumber;
+    }
+
+    public String getFirstname(){
+        return firstname;
+    }
+
+    public String getLastname(){
+        return lastname;
     }
 
 
