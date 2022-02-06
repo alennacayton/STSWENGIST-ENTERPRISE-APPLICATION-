@@ -76,12 +76,16 @@
                             <table class="table table-bordered">
                                 <tr>
                                     <th></th>
-                                    <th>Faculty #</th>
+                                    <th>Faculty Number</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
                                 </tr>
                                 <tr th:each="instructor : ${instructors}">
                                     <td><input form="new_section" name="facultyNumber"
                                                th:value="${instructor.facultyNumber}" type="radio"></td>
                                     <td th:text="${instructor.facultyNumber}">1234</td>
+                                    <td th:text="${instructor.firstname}">Anna</td>
+                                    <td th:text="${instructor.lastname}">Lee</td>
                                 </tr>
                             </table>
                         </div>
