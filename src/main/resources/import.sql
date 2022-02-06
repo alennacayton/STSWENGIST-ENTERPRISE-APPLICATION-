@@ -3,16 +3,18 @@ INSERT INTO subject_prerequisites (subject_subject_id, prerequisites_subject_id)
 INSERT INTO room (name, capacity) VALUES ('AS204', 10), ('AS105', 10), ('FC103', 10), ('ENG302', 10), ('Stat213', 10),
 ('BA313', 10), ('Econ123', 10), ('Psych217', 10), ('Gym', 10), ('SmallRoom', 1);
 INSERT INTO admin (id, firstname, lastname) VALUES (1, 'Richard', 'Webber'), (2, 'Miranda', 'Bailey'), (3, 'Owen', 'Hunt');
-INSERT INTO section (section_id, number_of_students, days, start_time, end_time, room_name, subject_subject_id) VALUES
-('ABC', 0, 0, '08:30', '10:00', 'AS204', 'Math1'),
-('PQR', 0, 2, '16:00', '17:30', 'BA313', 'BA101'),
-('STU', 0, 0, '08:30', '10:00', 'Econ123', 'Econ101'),
-('DEF', 0, 1, '10:00', '11:30', 'AS105', 'Math2'),
-('GHI', 0, 2, '11:30', '13:00', 'FC103', 'Com1'),
-('VWX', 0, 1, '10:00', '11:30', 'Psych217', 'Psych101'),
-('JKL', 0, 0, '13:00', '14:30', 'ENG302', 'ES1'),
-('MNO', 0, 1, '14:30', '16:00', 'Stat213', 'Stat1'),
-('YZA', 0, 2, '11:30', '13:00', 'Gym', 'PE1');
+INSERT INTO faculty (faculty_number, firstname, lastname) VALUES (1, 'Cloud', 'Strife'), (2, 'Aerith', 'Gainsborough'), (3, 'Tifa', 'Lockhart');
+INSERT INTO section (section_id, number_of_students, days, start_time, end_time, room_name, subject_subject_id, instructor_faculty_number) VALUES
+('ABC', 0, 0, '08:30', '10:00', 'AS204', 'Math1', 1),
+('PQR', 0, 2, '16:00', '17:30', 'BA313', 'BA101', 2),
+('STU', 0, 0, '08:30', '10:00', 'Econ123', 'Econ101', 2),
+('DEF', 0, 1, '10:00', '11:30', 'AS105', 'Math2', 1),
+('GHI', 0, 2, '11:30', '13:00', 'FC103', 'Com1', 3),
+('VWX', 0, 1, '10:00', '11:30', 'Psych217', 'Psych101', 2),
+('JKL', 0, 0, '13:00', '14:30', 'ENG302', 'ES1', 2),
+('MNO', 0, 1, '14:30', '16:00', 'Stat213', 'Stat1', 3),
+('YZA', 0, 2, '11:30', '13:00', 'Gym', 'PE1', 1);
+
 
 INSERT INTO room_sections (room_name, sections_section_id) VALUES ('AS204', 'ABC'), ('BA313', 'PQR'), ('Econ123', 'STU'),
 ('AS105','DEF'), ('FC103', 'GHI'), ('Psych217','VWX'), ('ENG302', 'JKL'), ('Stat213', 'MNO'), ('Gym', 'YZA');
