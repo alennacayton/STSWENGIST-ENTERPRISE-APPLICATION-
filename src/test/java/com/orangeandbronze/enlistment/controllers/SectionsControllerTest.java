@@ -3,12 +3,14 @@ package com.orangeandbronze.enlistment.controllers;
 import com.orangeandbronze.enlistment.domain.*;
 import org.hibernate.Session;
 import org.junit.jupiter.api.*;
+import org.mockito.ArgumentCaptor;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static com.orangeandbronze.enlistment.domain.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -43,20 +45,21 @@ class SectionsControllerTest {
         controller.setRoomRepo(roomRepository);
         controller.setFacultyRepo(facultyRepository);
 
-        // Set the return values
-        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(DEFAULT_SUBJECT));
-        when(roomRepository.findById(roomName)).thenReturn(Optional.of(room));
+        EntityManager entityManager = mock(EntityManager.class);
+        Session session = mock(Session.class);
+        when(entityManager.unwrap(Session.class)).thenReturn(session);
+        controller.setEntityManager(entityManager);
 
-        // Simulating the user action
-        String returnVal = controller.createSection(sectionId, subjectId, days, startTime, endTime, roomName, DEFAULT_FACULTY_NUMBER, redirectAttributes);
+        controller.createSection(DEFAULT_SECTION_ID, DEFAULT_SUBJECT_ID, Days.MTH, "08:30", "10:00", roomName,
+                DEFAULT_FACULTY_NUMBER, redirectAttributes);
 
-        // Retrieve the Subject object from the DB
-        verify(subjectRepository).findById(subjectId);
-        // Retrieve the Room object from the DB
-        verify(roomRepository).findById(roomName);
-        // save Section to DB
-        verify(sectionRepository).save(any(Section.class));
-        // save section to DB
-        assertEquals("redirect:sections", returnVal);
+        ArgumentCaptor<Section> sectionArgumentCaptor = ArgumentCaptor.forClass(Section.class);
+        assertAll(
+                () -> verify(subjectRepository).findById(DEFAULT_SUBJECT_ID),
+                () -> verify(roomRepository).findById(roomName),
+                () -> verify(sectionRepository).save(sectionArgumentCaptor.capture()),
+                () -> assertEquals(DEFAULT_SECTION_ID, sectionArgumentCaptor.getValue().getSectionId())
+        );
+
     }
 }
