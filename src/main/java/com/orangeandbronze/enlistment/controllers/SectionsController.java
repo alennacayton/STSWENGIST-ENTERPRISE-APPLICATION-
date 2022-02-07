@@ -8,6 +8,7 @@ import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.*;
 
+import javax.persistence.EntityManager;
 import javax.websocket.Session;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +31,8 @@ class SectionsController {
     private SectionRepository sectionRepo;
     @Autowired
     private FacultyRepository facultyRepo;
+    @Autowired
+    private EntityManager entityManager;
 
 
     @ModelAttribute("admin")
@@ -96,6 +99,10 @@ class SectionsController {
 
     void setAdminRepo(AdminRepository adminRepo) {
         this.adminRepo = adminRepo;
+    }
+
+    void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
 }
