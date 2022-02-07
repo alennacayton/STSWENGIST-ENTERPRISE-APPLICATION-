@@ -54,7 +54,7 @@ class SectionsController {
 
     @PostMapping public String createSection(@RequestParam String sectionId, @RequestParam String subjectId, @RequestParam Days days,
                                              @RequestParam String start, @RequestParam String end, @RequestParam String roomName,
-                                             @RequestParam int facultyNumber, RedirectAttributes redirectAttrs) {
+                                             @RequestParam int facultyNumber, RedirectAttributes redirectAttrs) throws SameSectionIdException {
 
         // Retrieve a Subject from the DB
         Subject subject = subjectRepo.findById(subjectId).orElseThrow(() -> new NoSuchElementException( "no subject found with subjectId " + subjectId));
@@ -70,8 +70,13 @@ class SectionsController {
         Schedule schedule = new Schedule(days, period);
         Faculty instructor = facultyRepo.findById(facultyNumber).orElseThrow( () -> new NoSuchElementException("No faculty found for facultyNumber " + facultyNumber));
 
+        if(sectionRepo.existsById(sectionId)){
+            throw new SameSectionIdException("A section with sectionId of " + sectionId + " already exists");
+        }
+
         // Create the Section object and save to DB
-        Section section = new Section(sectionId, subject, schedule, room, instructor); sectionRepo.save(section);
+        Section section = new Section(sectionId, subject, schedule, room, instructor);
+        sectionRepo.save(section);
         return "redirect:sections";
 
         // return "";
