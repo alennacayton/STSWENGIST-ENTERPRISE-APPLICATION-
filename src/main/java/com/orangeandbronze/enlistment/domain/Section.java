@@ -124,6 +124,8 @@ public class Section {
         return room;
     }
 
+    public Faculty getInstructor(){ return instructor;}
+
     @Override
     public String toString() {
         return sectionId;
