@@ -18,13 +18,8 @@ class SectionsControllerTest {
 
     @Test
     void createSection_save_new_section_to_repository() {
-        String sectionId = "X";
         String roomName = "X";
-        String subjectId = "X";
-        Days days = Days.MTH;
-        String startTime = "14:30";
-        String endTime = "16:00";
-        Room room = new Room(roomName, 40);
+
 
         // When create section (post) method is called, use non-production repo to see if controller actually calls it
         AdminRepository adminRepository = mock(AdminRepository.class);
@@ -33,6 +28,8 @@ class SectionsControllerTest {
         RoomRepository roomRepository = mock(RoomRepository.class);
         FacultyRepository facultyRepository = mock(FacultyRepository.class);
 
+        when(subjectRepository.findById(DEFAULT_SUBJECT_ID)).thenReturn(Optional.of(mock(Subject.class)));
+        when(roomRepository.findById(roomName)).thenReturn(Optional.of(mock(Room.class)));
         when(facultyRepository.findById(DEFAULT_FACULTY_NUMBER)).thenReturn(Optional.of(DEFAULT_FACULTY));
 
         RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
